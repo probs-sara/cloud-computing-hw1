@@ -72,7 +72,7 @@ class SubscriptionCreate(SubscriptionBase):
     }
 
 
-class SubscriptionUpdate(SubscriptionBase):
+class SubscriptionUpdate(BaseModel):
     """To update a subscription that already exists."""
     service: Optional[str] = Field(
         None, description="Name of the service providing the subscription.", json_schema_extra={"example": "Spotify"}
