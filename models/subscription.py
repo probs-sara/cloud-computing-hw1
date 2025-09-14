@@ -55,7 +55,7 @@ class SubscriptionBase(BaseModel):
 
 
 class SubscriptionCreate(SubscriptionBase):
-    """Create a subscription relation."""
+    """Create a subscription-member relation."""
     model_config = {
         "json_schema_extra": {
             "examples": [
