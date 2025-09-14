@@ -23,6 +23,9 @@ port = int(os.environ.get("FASTAPIPORT", 8000))
 persons: Dict[UUID, PersonRead] = {}
 addresses: Dict[UUID, AddressRead] = {}
 
+users: Dict[UUID, UserRead] = {}
+subscriptions: Dict[UUID, SubscriptionRead] = {}
+
 app = FastAPI(
     title="Person/Address API",
     description="Demo FastAPI app using Pydantic v2 models for Person and Address",

@@ -105,3 +105,39 @@ class SubscriptionUpdate(BaseModel):
             ]
         }
     }
+
+class SubscriptionRead(SubscriptionBase):
+    """Server representation returned to clients."""
+    subscription_id: UUID = Field(
+        default_factory=uuid4,
+        description="Server-generated Subscription ID.",
+        json_schema_extra={"example": "00000000-0000-8999-5999-000000000000"},
+    )
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        description="Creation timestamp (UTC).",
+        json_schema_extra={"example": "2025-01-15T10:20:30Z"},
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        description="Last update timestamp (UTC).",
+        json_schema_extra={"example": "2025-01-16T12:00:00Z"},
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "subscription_id": "00000000-0000-8999-5999-000000000000",
+                    "service": "Hulu",
+                    "member_name": "Allison Cameron",
+                    "username": "allisonxcameron",
+                    "password": "password9",
+                    "gender": "F",
+                    "created_at": "2025-01-15T10:20:30Z",
+                    "updated_at": "2025-01-16T12:00:00Z",
+                }
+            ]
+        }
+    }
+

@@ -11,7 +11,12 @@ from .address import AddressBase
 UNIType = Annotated[str, StringConstraints(pattern=r"^[a-z]{2,3}\d{1,4}$")]
 
 
-class PersonBase(BaseModel):
+class UserBase(BaseModel):
+    id: UUID = Field(
+        default_factory=uuid4,
+        description="Persistent User ID (server-generated).",
+        json_schema_extra={"example": "550e8400-e29b-41d4-a716-446655440000"},
+    )
     first_name: str = Field(
         ...,
         description="Given name.",
@@ -52,6 +57,7 @@ class PersonBase(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
                     "first_name": "Allison",
                     "last_name": "Cameron",
                     "email": "acameron@example.com",
@@ -65,12 +71,13 @@ class PersonBase(BaseModel):
     }
 
 
-class PersonCreate(PersonBase):
+class UserCreate(UserBase):
     """Creation payload for a User."""
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
                     "first_name": "Robert",
                     "last_name": "Chase",
                     "email": "rchase@princetonplainsborough.com",
@@ -84,7 +91,7 @@ class PersonCreate(PersonBase):
     }
 
 
-class PersonUpdate(BaseModel):
+class UserUpdate(BaseModel):
     """Partial update for a Person; supply only fields to change."""
     first_name: Optional[str] = Field(None, json_schema_extra={"example": "Gregory"})
     last_name: Optional[str] = Field(None, json_schema_extra={"example": "House"})
@@ -100,6 +107,42 @@ class PersonUpdate(BaseModel):
             "examples": [
                 {"first_name": "Gregory", "last_name": "House"},
                 {"password": "wilsonSUXXX2!"},
+            ]
+        }
+    }
+
+
+class UserRead(UserBase):
+    """Server representation returned to clients."""
+    id: UUID = Field(
+        default_factory=uuid4,
+        description="Server-generated User ID.",
+        json_schema_extra={"example": "550e8400-e29b-41d4-a716-446655440000"},
+    )
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        description="Creation timestamp (UTC).",
+        json_schema_extra={"example": "2025-01-15T10:20:30Z"},
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        description="Last update timestamp (UTC).",
+        json_schema_extra={"example": "2025-01-16T12:00:00Z"},
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "id": "550e8400-e29b-41d4-a716-446655440000",
+                    "service": "Hulu",
+                    "member_name": "Allison Cameron",
+                    "username": "allisonxcameron",
+                    "password": "password9",
+                    "gender": "F",
+                    "created_at": "2025-01-15T10:20:30Z",
+                    "updated_at": "2025-01-16T12:00:00Z",
+                }
             ]
         }
     }
